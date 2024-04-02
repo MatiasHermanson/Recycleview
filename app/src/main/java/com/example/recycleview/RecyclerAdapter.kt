@@ -1,17 +1,23 @@
 package com.example.recycleview
 
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
+import com.example.recycleview.Data.Companion.details
+import com.example.recycleview.Data.Companion.images
+import com.example.recycleview.Data.Companion.titles
 import kotlin.random.Random
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter (titles: Array<String>, details: Array<String>, images: Array<String>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     private var dataBind = Data()
+    private var titles = titles
+    private var details = details
+    private var images = images
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         viewHolder.itemTitle.text = dataBind.titles[Random.nextInt(0, dataBind.titles.size)]
@@ -39,9 +45,16 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             itemDetail = itemView.findViewById(R.id.itemDetail)
 
             itemView.setOnClickListener { v: View ->
-                val position: Int = adapterPosition + 1
-                Snackbar.make(v, "Click detected on item $position",
-                    Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                val position: Int = getAdapterPosition()
+                val title: String = titles[position]
+                val detail: String = details[position]
+                val image: Int = images[position]
+                val itemTitle = title
+                val itemDetail = detail
+                val itemImage = image
+
+                val imageProps = TypedValue()
+                this.itemImage.resources.getValue(image, imageProps, true)
             }
         }
     }
